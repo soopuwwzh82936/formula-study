@@ -210,7 +210,7 @@ a.card:focus-visible,.idx a:focus-visible{outline:3px solid #3575a0;outline-offs
 @media(pointer:coarse){.idx li>a,.read-category li>a{display:inline-block;padding:.4rem .15rem}.road-card{padding:.45rem .25rem}}
 
 #study-switch{flex-wrap:wrap;row-gap:0}
-#study-switch #guide-toggle[aria-expanded="true"]{color:#10273c;border-color:var(--theme)}
+#study-switch #guide-toggle[aria-expanded="true"]{color:#10273c;background:var(--theme-light);border-radius:.35rem}
 #guide-panel{max-width:1050px;margin:0 auto;padding:.4rem 1rem 1rem}
 .guide-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 1.6rem;color:#23384d}
 .guide-list>div{border-top:1px solid #dae3ea;padding:.65rem 0}
@@ -357,7 +357,7 @@ body:has(> #syllabus-audit:target)>#learning-app,body:has(> #syllabus-audit:targ
   .logo { font-size:clamp(.95rem,3.7vw,1.2rem); white-space:nowrap }
   .nav-tabs { gap:.05rem; padding:.12rem }
   .nav-btn { white-space:nowrap; padding:.4rem .49rem; min-height:40px; font-size:.88rem }
-  #study-switch { flex-wrap:nowrap; gap:.5rem; padding:0 .65rem; overflow-x:auto; overscroll-behavior-x:contain }
+  #study-switch { gap:.12rem .4rem; padding:.15rem .65rem }
   #study-switch :is(button,a) { flex:none; white-space:nowrap; font-size:.88rem; padding:.5rem .17rem; min-height:42px }
   .drawer-handle { min-height:44px; padding:.3rem; }
   .drawer-body { display:grid; gap:.55rem; padding:.55rem .75rem }
@@ -378,7 +378,7 @@ body:has(> #syllabus-audit:target)>#learning-app,body:has(> #syllabus-audit:targ
   .cat-btn { flex:none; white-space:normal; min-height:44px; padding:.38rem .65rem }
   .lookup-preview { gap:.25rem .5rem; margin:.42rem 0 .65rem; font-size:.88rem }
   #catalog-preview-links { gap:.2rem .55rem }
-  :is(#card-grid,#native-catalog .grid) { grid-template-columns:repeat(2,minmax(0,1fr)); gap:.58rem }
+  :is(#card-grid,#native-catalog .grid) { grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr)); gap:.58rem }
   :is(#card-grid,#native-catalog .grid) .card { min-width:0; padding:.68rem; border-radius:9px }
   :is(#card-grid,#native-catalog .grid) .badge { margin-bottom:.32rem }
   :is(#card-grid,#native-catalog .grid) .card-title { font-size:1rem; line-height:1.42; margin-bottom:.4rem }
@@ -414,8 +414,14 @@ body:has(> #syllabus-audit:target)>#learning-app,body:has(> #syllabus-audit:targ
   #learning-app > header { flex-direction:column; align-items:stretch }
   .nav-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)) }
   .nav-tabs .nav-btn { justify-content:center; gap:.2em; min-height:44px }
-  #study-switch { gap:.32rem }
-  #study-switch :is(button,a) { font-size:.86rem }
+  #study-switch {
+    display:grid;
+    grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) minmax(0,1.35fr) repeat(2,minmax(0,1fr));
+    gap:.12rem;
+    padding-inline:.35rem;
+  }
+  #study-switch :is(button,a) { min-width:0; white-space:normal; text-wrap:balance; font-size:.86rem }
+  #study-switch #resume-study { grid-column:1/-1; justify-self:end }
 }
 @media(max-width:349px) {
   :is(#card-grid,#native-catalog .grid) { grid-template-columns:minmax(0,1fr) }
@@ -447,8 +453,8 @@ body:has(> #syllabus-audit:target)>#learning-app,body:has(> #syllabus-audit:targ
 .sim-value-summary { margin:.45rem 0 0; line-height:1.5; font-variant-numeric:tabular-nums }
 .sim-box,.node-quiz,.study-status,.drawer-wrap,:is(#card-grid,#native-catalog .grid),.guide-search-target { scroll-margin-block-start:6rem }
 @media (max-width:700px) {
-  #study-switch { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); overflow:visible; gap:.15rem .35rem; padding:.25rem .65rem }
-  #study-switch :is(a,button) { justify-content:center; text-align:center; white-space:normal; line-height:1.35 }
+  #study-switch { flex-wrap:wrap; align-items:center }
+  #study-switch :is(a,button) { justify-content:center; text-align:center; line-height:1.35 }
   #study-switch [hidden] { display:none }
   #study-switch #resume-study { margin-left:0 }
   #study-switch [aria-expanded],#study-switch [data-study-view] { min-height:44px }
@@ -483,6 +489,7 @@ body:has(> #syllabus-audit:target)>#learning-app,body:has(> #syllabus-audit:targ
 #learning-app > header { scroll-margin-top:0 }
 #learning-app header a.nav-btn { display:inline-flex; align-items:center; text-decoration:none }
 #study-switch a { display:inline-flex; align-items:center; text-decoration:none }
+#study-switch .nav-word { white-space:nowrap }
 .subject-target { display:block; height:0 }
 .interactive-ready .native-only, .interactive-ready .subject-target { display:none!important }
 :root:not(.interactive-ready) :is(.drawer-wrap,#catalog-view > .setting-group,#cat-bar,#catalog-preview,#card-grid,#catalog-extra) { display:none!important }
@@ -978,7 +985,7 @@ math mtext, .equation-line mtext, .equation-inline mtext { font-family: var(--te
 <div class="study-switch-wrap"><nav id="study-switch" aria-label="學習方式">
   <a href="#catalog-view" data-study-view="catalog" aria-controls="catalog-view">公式與概念</a>
   <a href="#study-routes" data-study-view="route" aria-controls="study-routes">自學路線</a>
-  <a href="#reader-planner" data-study-view="planner" aria-controls="reader-planner">查詢與複習順序</a>
+  <a href="#reader-planner" data-study-view="planner" aria-controls="reader-planner"><span>查詢與<wbr><span class="nav-word">複習順序</span></span></a>
   <a href="#bank-view" data-study-view="bank" aria-controls="bank-view">無限題庫</a>
   <a href="#study-tools" id="guide-toggle" aria-controls="study-tools">全部功能</a>
   <button type="button" id="resume-study" hidden>繼續上次 →</button>
@@ -10122,9 +10129,18 @@ function showDrawer(open) {
   button.setAttribute('aria-expanded', String(open));
   button.textContent = open ? '▲ 向上收起字體與顏色欄' : '▼ 展開字體與顏色設定欄';
 }
+const compactSettings = window.matchMedia('(max-width:700px)');
+let settingsChosen = false;
+showDrawer(!compactSettings.matches);
 function toggleDrawer() {
+  settingsChosen = true;
   showDrawer(document.getElementById('drawer-btn').getAttribute('aria-expanded') !== 'true');
 }
+function resizeDrawer(event) {
+  if (!settingsChosen) showDrawer(!event.matches);
+}
+if (compactSettings.addEventListener) compactSettings.addEventListener('change', resizeDrawer);
+else compactSettings.addListener(resizeDrawer);
 
 function setTextFont(type, btn) {
   btn.parentElement.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
@@ -10620,7 +10636,7 @@ guidePanel.addEventListener('click', event => {
   if (action === 'definitions') { planner.browseDefinitions(); return; }
   const view = action === 'planner' ? 'planner' : ['quiz','progress','route'].includes(action) ? 'route' : 'catalog';
   setStudyView(view);
-  if (action === 'appearance') showDrawer(true);
+  if (action === 'appearance') { settingsChosen = true; showDrawer(true); }
   const selector = {catalog:'#query',planner:'#plan-query',route:'#road-graph [aria-pressed="true"]',quiz:'.node-quiz summary',progress:'#study-status',appearance:'#drawer-body button'}[action];
   const target = document.querySelector(selector);
   if (!target) return;
