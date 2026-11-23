@@ -355,8 +355,29 @@ body:has(> #syllabus-audit:target)>#learning-app,body:has(> #syllabus-audit:targ
   .container { margin:.75rem auto; padding:0 .75rem }
   #learning-app > header { padding:.4rem .65rem; column-gap:.35rem; row-gap:.15rem }
   .logo { font-size:clamp(.95rem,3.7vw,1.2rem); white-space:nowrap }
-  .nav-tabs { gap:.05rem; padding:.12rem }
-  .nav-btn { white-space:nowrap; padding:.4rem .49rem; min-height:40px; font-size:.88rem }
+  #learning-app > header .nav-tabs {
+    display:flex;
+    flex-flow:row nowrap;
+    align-items:center;
+    gap:.05rem;
+    height:calc(2.75rem + 4px);
+    padding:2px;
+    overflow:hidden;
+  }
+  #learning-app > header .nav-btn {
+    display:flex;
+    flex:1 1 0;
+    align-items:center;
+    justify-content:center;
+    min-width:0;
+    height:2.75rem;
+    min-height:2.75rem;
+    max-height:2.75rem;
+    padding:0 .49rem;
+    white-space:nowrap;
+    font-size:.88rem;
+    line-height:1.3;
+  }
   #study-switch { gap:.12rem .4rem; padding:.15rem .65rem }
   #study-switch :is(button,a) { flex:none; white-space:nowrap; font-size:.88rem; padding:.5rem .17rem; min-height:42px }
   .drawer-handle { min-height:44px; padding:.3rem; }
@@ -411,9 +432,9 @@ body:has(> #syllabus-audit:target)>#learning-app,body:has(> #syllabus-audit:targ
   #lesson-pages .read-category li a { display:block; min-height:40px; padding:.32rem .4rem; background:#f6f9fc; border:1px solid #e2e8f0; border-radius:.32rem }
 }
 @media(max-width:450px) {
-  #learning-app > header { flex-direction:column; align-items:stretch }
-  .nav-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)) }
-  .nav-tabs .nav-btn { justify-content:center; gap:.2em; min-height:44px }
+  #learning-app > header { display:block }
+  #learning-app > header .nav-tabs { margin-top:.2rem }
+  #learning-app > header .nav-btn { gap:.2em }
   #study-switch {
     display:grid;
     grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) minmax(0,1.35fr) repeat(2,minmax(0,1fr));
@@ -10969,7 +10990,7 @@ const planner = (() => {
   for(const [sub,group] of Object.entries(DB)){
     group.items.forEach((card,i)=>{
       const key=sub+'-'+i;
-      const passages=[card.s1,card.s2].flatMap(field=>plain(field).split(/(?<=[。！？；])/u))
+      const passages=[card.s1,card.s2].flatMap(field=>plain(field).match(/[^。！？；]+[。！？；]?|[。！？；]/gu) || [])
         .map(s=>s.trim()).filter(Boolean).map(text=>({text,grams:features(text)}));
       passagesByCard.set(key,passages);
       const vocabulary=new Set(passages.flatMap(p=>[...p.grams]));
@@ -11698,13 +11719,13 @@ if(startCard) window.scrollTo(0,0);
     const rows=textbookCatalog.rows(name,semester,subject);
     function endpoint(key,last) {
       const matches=rows.map((row,i)=>row.code===key || row.code.startsWith(key+'-') ? i : -1).filter(i=>i>=0);
-      return last ? matches.at(-1) : matches[0];
+      return last ? matches[matches.length - 1] : matches[0];
     }
     const first=endpoint(start,false), last=endpoint(end,true);
     if(first===undefined || last===undefined) return fail(name+semester+label+'的目錄找不到該節。可查範圍：'+rows.map(r=>r.code).join('、')+'。');
     if(last<first) return fail('起點在終點之後，請交換起訖章節。');
     const steps=rows.slice(first,last+1);
-    const range={ids:[...new Set(steps.flatMap(step=>step.ids))],label:name+' '+semester+' '+label+' '+steps[0].code+' 至 '+steps.at(-1).code};
+    const range={ids:[...new Set(steps.flatMap(step=>step.ids))],label:name+' '+semester+' '+label+' '+steps[0].code+' 至 '+steps[steps.length - 1].code};
     if(bank){
       if(!range.ids.length)return fail('這段範圍尚無對應公式卡，請選擇其他章節。');
       questionBank.open(subject,range);
