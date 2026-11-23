@@ -421,6 +421,7 @@ body:has(> #syllabus-audit:target)>#learning-app,body:has(> #syllabus-audit:targ
     padding-inline:.35rem;
   }
   #study-switch :is(button,a) { min-width:0; white-space:normal; text-wrap:balance; font-size:.86rem }
+  #study-switch > a { align-self:stretch }
   #study-switch #resume-study { grid-column:1/-1; justify-self:end }
 }
 @media(max-width:349px) {
@@ -661,8 +662,9 @@ html.press-events [data-pressing]:not(.color-dot) {
   gap:.3rem .28rem;
   min-width:0;
   max-width:100%;
-  padding:.1rem .04rem .22rem;
+  padding:.15rem .04rem .3rem;
   overflow-x:auto;
+  overflow-y:hidden;
   overscroll-behavior-x:contain;
 }
 .formula-value math,.algebra-equations .algebra-line math,.formula-guide math {
@@ -674,6 +676,7 @@ html.press-events [data-pressing]:not(.color-dot) {
   font-size:1.15rem;
   color:var(--ink-color);
 }
+.formula-value > math { margin-block:.18em .4em }
 .formula-value mtext,.algebra-equations mtext,.formula-guide mtext{font-family:var(--text-font)}
 .formula-guide {
   color:#2b4351;
@@ -985,7 +988,7 @@ math mtext, .equation-line mtext, .equation-inline mtext { font-family: var(--te
 <div class="study-switch-wrap"><nav id="study-switch" aria-label="學習方式">
   <a href="#catalog-view" data-study-view="catalog" aria-controls="catalog-view">公式與概念</a>
   <a href="#study-routes" data-study-view="route" aria-controls="study-routes">自學路線</a>
-  <a href="#reader-planner" data-study-view="planner" aria-controls="reader-planner"><span>查詢與<wbr><span class="nav-word">複習順序</span></span></a>
+  <a href="#reader-planner" data-study-view="planner" aria-controls="reader-planner"><span><span class="nav-word">查詢與</span><wbr><span class="nav-word">複習順序</span></span></a>
   <a href="#bank-view" data-study-view="bank" aria-controls="bank-view">無限題庫</a>
   <a href="#study-tools" id="guide-toggle" aria-controls="study-tools">全部功能</a>
   <button type="button" id="resume-study" hidden>繼續上次 →</button>
